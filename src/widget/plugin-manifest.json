@@ -1,0 +1,33 @@
+{
+  "locale": [
+    "en"
+  ],
+  "service": "FINANCE",
+  "whiteListedDomains": [],
+  "modules": {
+    "widgets": [
+      {
+        "location": "plugin.globalfields",
+
+        "name": "Finance Extension",
+        "url": "/app/widget.html",
+        "logo": "/app/img/logo.png"
+      }
+    ]
+  },
+  "config": [],
+  "usedConnections": [
+    {
+    "connectionLinkName": "zohobookssettingsall",
+    "connectionName": "zohobookssettingsall",
+    "serviceName": "zoho_books",
+    "userAccess": true,
+    "isUserDefinedService": false,
+    "sharedBy": 772893958,
+    "scope": [
+      "ZohoBooks.settings.All"
+    ]
+  }
+    
+  ]
+}
