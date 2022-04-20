@@ -101,4 +101,6 @@ select {
 
   border:1px red solid;
 }
-  
+#header_col3{
+  width: 108px;
+} 
