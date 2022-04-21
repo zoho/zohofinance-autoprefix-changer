@@ -22,12 +22,12 @@
       <tr>
         <td>Invoices</td>
         <td>
-          <select class="select" id="inv-select" onchange="change(this)">
+          <select class="select" id="inv-select" onchange="load_format_preview('inv-select','inv-inputarea','inv-preview','inv-warning')">
             <option value="none" selected disabled hidden>Select Format</option>
           </select>
         </td>
         <td class="col3">
-          <input class="inputarea" type="text" value="INV" onkeyup="change(this)" />
+          <input class="inputarea" id="inv-inputarea" type="text" value="INV" onkeyup="load_format_preview('inv-select','inv-inputarea','inv-preview','inv-warning')" />
         </td>
         <td>
           <div class="Pluginpreview" id="inv-pluginpreview">
@@ -35,18 +35,22 @@
           </div>
         </td>
       </tr>
+      <!-- warning -->
+      <tr id="inv-warning">
+        <td colspan="4" class="warning"><img src="./assets/Info.svg" class="infosvg"> The Format Preview not more than 13 character</td>
+      </tr>
 
       <!-- Estimate Field row -->
 
       <tr>
         <td>Estimates</td>
         <td>
-          <select class="select" id="est-select" onchange="change(this)" >
+          <select class="select" id="est-select" onchange="load_format_preview('est-select','est-inputarea','est-preview','est-warning')" >
             <option value="none" selected disabled hidden>Select Format</option>
           </select>
         </td>
         <td class="col3">
-          <input class="inputarea" type="text" value="EST" onkeyup="change(this)" />
+          <input class="inputarea" id="est-inputarea"type="text" value="EST" onkeyup="load_format_preview('est-select','est-inputarea','est-preview','est-warning')" />
         </td>
         <td>
           <div class="Pluginpreview" id="est-pluginpreview">
@@ -54,18 +58,23 @@
           </div>
         </td>
       </tr>
+      <!-- warning -->
+    </tr>
+    <tr id="est-warning">
+      <td colspan="4" class="warning"><img src="./assets/Info.svg" class="infosvg"> The Format Preview not more than 13 character</td>
+    </tr>
 
       <!-- Sales Order Field row -->
 
       <tr>
         <td>Sales Order</td>
         <td>
-          <select class="select" id="sales-select" onchange="change(this)">
+          <select class="select" id="sales-select" onchange="load_format_preview('sales-select','sales-inputarea','sales-preview','so-warning')">
             <option value="none" selected disabled hidden>Select Format</option>
           </select>
         </td>
         <td class="col3">
-          <input class="inputarea" type="text" value="SO" onkeyup="change(this)" />
+          <input class="inputarea" id="sales-inputarea" type="text" value="SO" onkeyup="load_format_preview('sales-select','sales-inputarea','sales-preview','so-warning')" />
         </td>
         <td>
           <div class="Pluginpreview" id="sales-pluginpreview">
@@ -74,17 +83,22 @@
         </td>
       </tr>
 
+    </tr>
+    <tr id="so-warning">
+      <td colspan="4" class="warning"><img src="./assets/Info.svg" class="infosvg"> The Format Preview not more than 13 character</td>
+    </tr>
+
       <!-- Purchase Order Field row -->
 
       <tr>
         <td>Purchase Order</td>
         <td>
-          <select class="select" id="purchase-select" onchange="change(this)" >
+          <select class="select" id="purchase-select" onchange="load_format_preview('purchase-select','purschase-inputarea','purchase-preview','po-warning')" >
             <option value="none" selected disabled hidden>Select Format</option>
           </select>
         </td>
         <td class="col3">
-          <input class="inputarea" type="text" value="PO" onkeyup="change(this)" />
+          <input class="inputarea" id="purschase-inputarea" type="text" value="PO" onkeyup="load_format_preview('purchase-select','purschase-inputarea','purchase-preview','po-warning')" />
         </td>
         <td>
           <div class="Pluginpreview" id="purchase-pluginpreview">
@@ -92,13 +106,17 @@
           </div>
         </td>
       </tr>
+    </tr>
+    <tr id="po-warning">
+      <td colspan="4" class="warning"><img src="./assets/Info.svg" class="infosvg"> The Format Preview not more than 13 character</td>
+    </tr>
     </table>
     <br />
     <!-- Check box -->
     <input type="checkbox" id="checkbox" />
     <label for="checkbox">
       Do you want to reset
-      <i>Invoice Number</i>
+      <i>Entity Numbers</i>
       every Month ?
     </label>
 

@@ -41,6 +41,10 @@ input[type=text]{
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     
 }
+input[type='text']:focus{
+  outline: none;
+  border: #408DFB 1px solid;
+}
 
 select {
 
@@ -51,6 +55,12 @@ select {
   width:160px;
   border-radius: 6px;
   background-color: #ffffff;
+}
+select:focus{
+  outline: none;
+}
+select:hover{
+  border: #408DFB 1px solid;
 }
 
 .preview{
@@ -104,3 +114,56 @@ select {
 #header_col3{
   width: 108px;
 } 
+.warning{
+  font-size: 13px;
+  color: red;
+  width: 290px;
+
+}
+
+
+.infosvg{
+  width: 12px;
+  position: relative;
+  top: 2px;
+}
+#inv-warning{
+  position: absolute;
+  background-color: inherit;
+  top: 87px;
+  left: 431px;
+  visibility: hidden;
+}
+#po-warning{
+  position: absolute;
+  background-color: inherit;
+  top: 270px;
+  left: 431px;
+  visibility: hidden;
+}
+#est-warning{
+  position: absolute;
+  background-color: inherit;
+  top: 149px;
+  left: 431px;
+  visibility: hidden;
+}
+#so-warning{
+  position: absolute;
+  background-color: inherit;
+  top: 210px;
+  left: 431px;
+  visibility: hidden;
+}
+#inv-warning.active{
+  visibility: visible;
+}
+#est-warning.active{
+  visibility: visible;
+}
+#po-warning.active{
+  visibility: visible;
+}
+#so-warning.active{
+  visibility: visible;
+}

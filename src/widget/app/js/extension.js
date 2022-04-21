@@ -1,6 +1,5 @@
 // Elements
 const preview = document.getElementsByClassName('preview');
-const pluginpreview = document.querySelectorAll('.Pluginpreview');
 const reset_checkbox = document.getElementById('checkbox');
 
 const inv_preview = document.querySelector('#inv-preview');
@@ -37,7 +36,7 @@ let month_in_str = {
 
 // dict  used to insert drop down
 
-let datePreview = {
+let date_format_view = {
 
   'MM-YYYY': month_in_str[month] + '-' + year_4 + '-',
   'MM-YY': month_in_str[month] + '-' + year_2 + '-',
@@ -90,162 +89,194 @@ append_drop_down(po_select);
 
 // display-preview
 
-function change( tag ) {
-   let parent=tag.parentElement;
-   let parentvalue=tag.parentElement.nodeName;
-    if((parentvalue)!='TR'){
-        change(parent);
+function load_format_preview(select,inputarea,preview,warning){
+
+  select=document.getElementById(select).value;
+  inputarea=document.getElementById(inputarea).value;
+  preview = document.getElementById(preview);
+  warning = document.getElementById(warning);
+
+  if (select != "none") {
+
+    preview.innerText = inputarea+"-"+date_format_view[select];
+
+    if (preview.textContent.length>13) {
+
+      preview.parentElement.classList.add('active');
+      warning.classList.add('active');
+
     }
-    else{
-        let input_value = parent.getElementsByTagName('input')[0].value;
-        let select_value = parent.getElementsByTagName('select')[0].value;
-        if(select_value != "none"){
-            let preview = parent.getElementsByTagName('span');
-            preview[0].innerText = input_value+"-"+datePreview[select_value];
-        }
+    else {
+
+      preview.parentElement.classList.remove('active');
+      warning.classList.remove('active');
+
     }
+  }
+ 
 }
 
 window.onload = () => {
-  ZFAPPS.extension.init().then(async () => {
-    ZFAPPS.invoke('RESIZE', { width: '800px', height: '360px' })
 
-        let { organization } = await ZFAPPS.get('organization');
+  ZFAPPS.extension.init().then(async (App) => {
 
-        await getglobal(organization, placeholders[0]);
-        await getglobal(organization,placeholders[1]);
-        let excess_value=[];
-        App.instance.on('ON_SETTINGS_WIDGET_PRE_SAVE', () => {
-            for(let index=0; index=preview.length ; index++){
-                let length = preview[index].length;
-                if(length<=13){
+    ZFAPPS.invoke('RESIZE', { width: '800px', height: '360px' });
+    let { organization } = await ZFAPPS.get('organization');
+    await load_placeholder(organization, placeholders[0]);
+    await load_placeholder(organization,placeholders[1]);
+    App.instance.on('ON_SETTINGS_WIDGET_PRE_SAVE', async() => {
 
-                    hook();
-                }
-                else{
-                    excess_value.push(index);
-                }   
-            }
-            for (let index in excess_value){
-                alert("%d in the preview element not exceed 13 charatcers ",index);
-            }
-        })
+      let excess_value_entity=[];  
+      let empty_value_entity=[]
+      for(let index=0; index<preview.length ; index++){
+        let length = (preview[index].textContent).length;
+        if(length==0){
+          empty_value_entity.push(index);
+        }
+        else if(length>13){
+          excess_value_entity.push(index);
+        }
+      }
+      let empty_value_count = empty_value_entity.length;
+      let excess_value_count = excess_value_entity.length;
+
+      if(empty_value_count!=4){
+        if(excess_value_count == 0){
+          await load_the_field(organization);
+
+        }
+        else{
+          alert ("Check the preview format not more than 13 character");
+          return {
+            "prevent_save": true
+          };
+        }
+      }
+      else{
+        alert ("Atleast one entity you must filled ");
+        return {
+          "prevent_save": true
+        };
+      }
     })
+  })
 }
 
-const hook = async () => {
-    let entity = {
-        Invoice: {
-            Prefix: 'INV',
-            Date: ' ',
-        },
-        Estimate: {
-            Prefix: 'EST',
-            Date: ' ',
-        },
-        SalesOrder: {
-            Prefix: 'SO',
-            Date: ' ',
-        },
-        PurchaseOrder: {
-            Prefix: 'PO',
-            Date: ' ',
-        },
-    }
-    var checked = 'no'
-    if (reset_checkbox.checked) {
-        var checked = 'yes'
-    }
-    entity['Invoice'].Prefix = inv_preview.textContent.split('-')[0] || 'INV'
-    entity['Invoice'].Date = inv_select.value
-    entity['Estimate'].Prefix = est_preview.textContent.split('-')[0] || 'EST'
-    entity['Estimate'].Date = est_select.value
-    entity['SalesOrder'].Prefix = so_preview.textContent.split('-')[0] || 'SO'
-    entity['SalesOrder'].Date = so_select.value
-    entity['PurchaseOrder'].Prefix =po_preview.textContent.split('-')[0] || 'PO'
-    entity['PurchaseOrder'].Date = po_select.value
+const load_the_field = async (organization) => {
+  let entity = {
+    Invoice: {
+      Prefix: 'INV',
+      Date: ' ',
+    },
+    Estimate: {
+      Prefix: 'EST',
+      Date: ' ',
+    },
+    SalesOrder: {
+      Prefix: 'SO',
+      Date: ' ',
+    },
+    PurchaseOrder: {
+      Prefix: 'PO',
+      Date: ' ',
+    },
+  }
+  var checked = 'no'
+  if (reset_checkbox.checked) {
+    var checked = 'yes'
+  }
+  entity['Invoice'].Prefix = inv_preview.textContent.split('-')[0] || 'INV'
+  entity['Invoice'].Date = inv_select.value
+  entity['Estimate'].Prefix = est_preview.textContent.split('-')[0] || 'EST'
+  entity['Estimate'].Date = est_select.value
+  entity['SalesOrder'].Prefix = so_preview.textContent.split('-')[0] || 'SO'
+  entity['SalesOrder'].Date = so_select.value
+  entity['PurchaseOrder'].Prefix =po_preview.textContent.split('-')[0] || 'PO'
+  entity['PurchaseOrder'].Date = po_select.value
             
-    //update the values in globalfields
-    await updateGlobalVariables(organization,entity,placeholders[0]);
+  //update the values in placeholder
+  await update_placeholder(organization,entity,placeholders[0]);
             
-    //update the checkbox fields
-    await updateGlobalVariables(organization,checked,placeholders[1]);
+  //update the checkbox fields
+  await update_placeholder(organization,checked,placeholders[1]);
 }
 
-// Api call to get the globalfields
+// Api call to load the placeholder
 
-const getglobal = async (organization, placeholder) => {
+const load_placeholder = async (organization, placeholder) => {
 
-    const booksAPIPrefix = `https://books.zoho${ organization.data_center_extension || '.com' }/api/v3`;
-    let globaldata = {
-        url: booksAPIPrefix + '/settings/orgvariables/' + placeholder,
-        method: 'GET',
-        url_query: [
-        {
-            key: 'organization_id',
-            value: organization.organization_id,
-        },
-        ],
-        header: [{ key: 'Content-Type', value: 'application/json' }],
-        connection_link_name: booksConnection,
-    }
-    try 
+  const booksAPIPrefix = `https://books.localzoho${ organization.data_center_extension || '.com' }/api/v3`;
+  let globaldata = {
+    url: booksAPIPrefix + '/settings/orgvariables/' + placeholder,
+    method: 'GET',
+    url_query: [
     {
-        let checkbox_value; 
-        let {data: { body } } = await ZFAPPS.request(globaldata);
-        let { orgvariable: { value } } = JSON.parse(body);
-        let {
-        Invoice: { Prefix: inv_prefix, Date: inv_date_format },
-        Estimate: { Prefix: est_prefix, Date: est_date_format },
-        SalesOrder: { Prefix: so_prefix, Date: so_date_format },
-        PurchaseOrder: { Prefix: po_prefix, Date: po_date_format },
-        } = JSON.parse(value) || checkbox_value ;
+      key: 'organization_id',
+      value: organization.organization_id,
+    },
+    ],
+    header: [{ key: 'Content-Type', value: 'application/json' }],
+    connection_link_name: booksConnection,
+  }
+  try 
+  {
+    let checkbox_value; 
+    let {data: { body } } = await ZFAPPS.request(globaldata);
+    let { orgvariable: { value } } = JSON.parse(body);
+    let {
+      Invoice: { Prefix: inv_prefix, Date: inv_date_format },
+      Estimate: { Prefix: est_prefix, Date: est_date_format },
+      SalesOrder: { Prefix: so_prefix, Date: so_date_format },
+      PurchaseOrder: { Prefix: po_prefix, Date: po_date_format },
+    } = JSON.parse(value) || checkbox_value ;
         
-        let inv_date = datePreview[inv_date_format];
+    let inv_date = date_format_view[inv_date_format];
 
-        if (inv_date  != undefined) {
-        inv_preview.innerText = inv_prefix + '-' + inv_date;
-        let index = dateFormats.indexOf(inv_date_format);
-        inv_select.selectedIndex = index;
-        }
-
-        let est_date = datePreview[est_date_format];
-
-        if (est_date  != undefined) {
-        est_preview.innerText = est_prefix + '-' + est_date;
-        let index = dateFormats.indexOf(est_date_format);
-        est_select.selectedIndex = index;
-        
-        }
-
-        let so_date = datePreview[so_date_format];
-
-        if ( so_date  != undefined) {
-        so_preview.innerText = so_prefix + '-' + so_date;
-        let index = dateFormats.indexOf(so_date_format);
-        so_select.selectedIndex = index;
-        }
-
-        let po_date = datePreview[po_date_format];
-
-        if (po_date != undefined) {
-        po_preview.innerText = po_prefix + '-' + po_date
-        let index = dateFormats.indexOf(po_date_format);
-        po_select.select.selectedIndex = index;
-        }
-        if (checkbox_value=="yes"){
-        reset_checkbox.checked= true;
-        }
-    } catch (err) {
-        console.log(err);
+    if (inv_date  != undefined) {
+      inv_preview.innerText = inv_prefix + '-' + inv_date;
+      let index = dateFormats.indexOf(inv_date_format);
+      inv_select.selectedIndex = index;
     }
+
+    let est_date = date_format_view[est_date_format];
+
+    if (est_date  != undefined) {
+      est_preview.innerText = est_prefix + '-' + est_date;
+      let index = dateFormats.indexOf(est_date_format);
+      est_select.selectedIndex = index;
+        
+    }
+
+    let so_date = date_format_view[so_date_format];
+
+    if ( so_date  != undefined) {
+      so_preview.innerText = so_prefix + '-' + so_date;
+      let index = dateFormats.indexOf(so_date_format);
+      so_select.selectedIndex = index;
+    }
+
+    let po_date = date_format_view[po_date_format];
+
+    if (po_date != undefined) {
+      po_preview.innerText = po_prefix + '-' + po_date
+      let index = dateFormats.indexOf(po_date_format);
+      po_select.select.selectedIndex = index;
+    }
+
+    if (checkbox_value=="yes"){
+      reset_checkbox.checked= true;
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-//api call for update the global fields
+//api call for update the placeholder
 
-const updateGlobalVariables = async (organization, value, placeholder) => {
+const update_placeholder = async (organization, value, placeholder) => {
   var data = { value: value }
-  const booksAPIPrefix = `https://books.zoho${ organization.data_center_extension || '.com' }/api/v3`;
+  const booksAPIPrefix = `https://books.localzoho${ organization.data_center_extension || '.com' }/api/v3`;
   var options = {
 
     url: booksAPIPrefix+'/settings/orgvariables/' + placeholder,
