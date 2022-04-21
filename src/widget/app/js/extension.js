@@ -205,7 +205,7 @@ const load_the_field = async (organization) => {
 
 const load_placeholder = async (organization, placeholder) => {
 
-  const booksAPIPrefix = `https://books.localzoho${ organization.data_center_extension || '.com' }/api/v3`;
+  const booksAPIPrefix = `https://books.zoho${ organization.data_center_extension || '.com' }/api/v3`;
   let globaldata = {
     url: booksAPIPrefix + '/settings/orgvariables/' + placeholder,
     method: 'GET',
@@ -276,7 +276,7 @@ const load_placeholder = async (organization, placeholder) => {
 
 const update_placeholder = async (organization, value, placeholder) => {
   var data = { value: value }
-  const booksAPIPrefix = `https://books.localzoho${ organization.data_center_extension || '.com' }/api/v3`;
+  const booksAPIPrefix = `https://books.zoho${ organization.data_center_extension || '.com' }/api/v3`;
   var options = {
 
     url: booksAPIPrefix+'/settings/orgvariables/' + placeholder,
