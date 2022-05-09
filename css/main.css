@@ -1,0 +1,169 @@
+*{
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter';
+      
+}
+
+body {
+
+  background: white;
+  margin-left: 1px;
+
+}
+
+th,td{
+
+  padding: 10px;
+  width: 170px;
+   
+}
+th{
+
+  text-align: justify;
+  padding: 12px;
+  font-weight: 400;
+    
+}
+
+input[type=text]{
+
+  width: 85px;
+  height: 20px;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    
+}
+input[type='text']:focus{
+  outline: none;
+  border: #408DFB 1px solid;
+}
+
+select {
+
+  padding: 7px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width:160px;
+  border-radius: 6px;
+  background-color: #ffffff;
+}
+select:focus{
+  outline: none;
+}
+select:hover{
+  border: #408DFB 1px solid;
+}
+
+.preview{
+
+  font-weight: 600;
+  padding: 5px;
+    
+}
+
+.col3{
+  width: 100px;
+}
+
+.Pluginpreview{
+  
+  position: relative;
+  padding: 10px;
+  border-radius: 7px;
+  width: 160px;
+  height: 15px;
+  background-color:#F8F8FA;
+  border: grey 1px solid;
+  
+}
+
+#header{
+  border-bottom: 2px solid grey ;
+  border-top: 2px solid grey;
+  
+}
+  
+#inv-pluginpreview.active{
+
+  border: 1px red solid;
+}
+  
+#est-pluginpreview.active{
+
+  border: 1px red solid;
+}
+  
+#sales-pluginpreview.active{
+
+  border:1px red solid;
+  
+}
+#purchase-pluginpreview.active{
+
+  border:1px red solid;
+}
+#header_col3{
+  width: 108px;
+} 
+.warning{
+  font-size: 13px;
+  color: red;
+  width: 310px;
+
+}
+
+
+.infosvg{
+  width: 12px;
+  position: relative;
+  top: 2px;
+}
+#inv-warning{
+  position: absolute;
+  background-color: inherit;
+  top: 87px;
+  left: 389px;
+  visibility: hidden;
+}
+#po-warning{
+  position: absolute;
+  background-color: inherit;
+  top: 270px;
+  left: 389px;
+  visibility: hidden;
+}
+#est-warning{
+  position: absolute;
+  background-color: inherit;
+  top: 149px;
+  left: 389px;
+  visibility: hidden;
+}
+#so-warning{
+  position: absolute;
+  background-color: inherit;
+  top: 210px;
+  left: 389px;
+  visibility: hidden;
+}
+#inv-warning.active{
+  visibility: visible;
+}
+#est-warning.active{
+  visibility: visible;
+}
+#po-warning.active{
+  visibility: visible;
+}
+#so-warning.active{
+  visibility: visible;
+}
