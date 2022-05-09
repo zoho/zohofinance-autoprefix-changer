@@ -1,5 +1,4 @@
-prefix_format = global_fields.get("vl__utpsb_prefixprefix_formate").get("value");
-reset_value = global_fields.get("vl__utpsb_number_reset").get("value");
+format = global_fields.get("vl__utpsb_prefixformate").get("value");
 org_id = organization.get("organization_id");
 number = "001";
 URL = "https://books.zoho" + organization.get("data_center_extension") + "/api/v3/settings/";
@@ -11,8 +10,9 @@ year_4 = date_array.get(2);
 year_2 = year_4.subText(2,4);
 month_l = date1.getMonth();
 dateprefix = "";
-prefix = {"INV":prefix_format.get("Invoice").get("Prefix"),"EST":prefix_format.get("Estimate").get("Prefix"),"SO":prefix_format.get("SalesOrder").get("Prefix"),"PO":prefix_format.get("PurchaseOrder").get("Prefix")};
-date = {"INV":prefix_format.get("Invoice").get("Date"),"EST":prefix_format.get("Estimate").get("Date"),"SO":prefix_format.get("SalesOrder").get("Date"),"PO":prefix_format.get("PurchaseOrder").get("Date")};
+prefix = {"INV":format.get("Invoice").get("Prefix"),"EST":format.get("Estimate").get("Prefix"),"SO":format.get("SalesOrder").get("Prefix"),"PO":format.get("PurchaseOrder").get("Prefix")};
+date = {"INV":format.get("Invoice").get("Date"),"EST":format.get("Estimate").get("Date"),"SO":format.get("SalesOrder").get("Date"),"PO":format.get("PurchaseOrder").get("Date")};
+option_numb = format.get("checked");
 for each  list1 in date.keys()
 {
 	date_array_form = date.get(list1).toList("-");
@@ -41,7 +41,7 @@ for each  list1 in date.keys()
 for each  list2 in prefix.keys()
 {
 	prefix_final = prefix.get(list2) + "-" + date.get(list2);
-	if(reset_value == "yes")
+	if(option_numb == "yes")
 	{
 		body = {"JSONString":{"prefix_string":prefix_final,"next_number":number},"organization_id":org_id};
 	}
