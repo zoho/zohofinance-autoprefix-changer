@@ -117,7 +117,7 @@ select:hover{
 .warning{
   font-size: 13px;
   color: red;
-  width: 290px;
+  width: 310px;
 
 }
 
@@ -131,28 +131,28 @@ select:hover{
   position: absolute;
   background-color: inherit;
   top: 87px;
-  left: 431px;
+  left: 389px;
   visibility: hidden;
 }
 #po-warning{
   position: absolute;
   background-color: inherit;
   top: 270px;
-  left: 431px;
+  left: 389px;
   visibility: hidden;
 }
 #est-warning{
   position: absolute;
   background-color: inherit;
   top: 149px;
-  left: 431px;
+  left: 389px;
   visibility: hidden;
 }
 #so-warning{
   position: absolute;
   background-color: inherit;
   top: 210px;
-  left: 431px;
+  left: 389px;
   visibility: hidden;
 }
 #inv-warning.active{

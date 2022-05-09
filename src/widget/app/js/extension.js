@@ -13,7 +13,7 @@ const so_select = document.querySelector('#sales-select');
 const po_select = document.querySelector('#purchase-select');
 
 // Config
-const placeholders =['vl__utpsb_prefixformate','vl__utpsb_number_reset'];
+const placeholders ='vl__utpsb_prefixformate';
 const booksConnection = 'zohobookssettingsall';
 
 let month = new Date().getMonth() + 1;
@@ -122,8 +122,7 @@ window.onload = () => {
 
     ZFAPPS.invoke('RESIZE', { width: '800px', height: '360px' });
     let { organization } = await ZFAPPS.get('organization');
-    await load_placeholder(organization, placeholders[0]);
-    await load_placeholder(organization,placeholders[1]);
+    await load_placeholder(organization, placeholders);
     App.instance.on('ON_SETTINGS_WIDGET_PRE_SAVE', async() => {
 
       let excess_value_entity=[];  
@@ -180,10 +179,11 @@ const load_the_field = async (organization) => {
       Prefix: 'PO',
       Date: ' ',
     },
+    checked:"no"
   }
-  var checked = 'no'
   if (reset_checkbox.checked) {
     var checked = 'yes'
+    entity['checked']=checked;
   }
   entity['Invoice'].Prefix = inv_preview.textContent.split('-')[0] || 'INV'
   entity['Invoice'].Date = inv_select.value
@@ -195,10 +195,10 @@ const load_the_field = async (organization) => {
   entity['PurchaseOrder'].Date = po_select.value
             
   //update the values in placeholder
-  await update_placeholder(organization,entity,placeholders[0]);
+  await update_placeholder(organization,entity,placeholders);
             
   //update the checkbox fields
-  await update_placeholder(organization,checked,placeholders[1]);
+  // await update_placeholder(organization,checked,placeholders[1]);
 }
 
 // Api call to load the placeholder
@@ -220,16 +220,19 @@ const load_placeholder = async (organization, placeholder) => {
   }
   try 
   {
-    let checkbox_value; 
     let {data: { body } } = await ZFAPPS.request(globaldata);
+    console.log(body);
     let { orgvariable: { value } } = JSON.parse(body);
+    console.log(value);
+
     let {
       Invoice: { Prefix: inv_prefix, Date: inv_date_format },
       Estimate: { Prefix: est_prefix, Date: est_date_format },
       SalesOrder: { Prefix: so_prefix, Date: so_date_format },
       PurchaseOrder: { Prefix: po_prefix, Date: po_date_format },
-    } = JSON.parse(value) || checkbox_value ;
-        
+      checked: checkbox_value 
+    } = JSON.parse(value);
+
     let inv_date = date_format_view[inv_date_format];
 
     if (inv_date  != undefined) {
@@ -262,11 +265,12 @@ const load_placeholder = async (organization, placeholder) => {
       let index = dateFormats.indexOf(po_date_format);
       po_select.select.selectedIndex = index;
     }
-
     if (checkbox_value=="yes"){
       reset_checkbox.checked= true;
     }
 
+
+   
   } catch (err) {
     console.log(err);
   }
